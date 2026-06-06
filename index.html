@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>zaoDayo の手帖</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-avatar">
+      <div class="avatar-circle">Z</div>
+      <div class="sidebar-name">zaoDayo</div>
+      <div class="sidebar-handle">手帖</div>
+    </div>
+
+    <span class="nav-section-label">pages</span>
+    <button class="nav-link" onclick="switchView('home', this)">Home</button>
+    <button class="nav-link" onclick="switchView('entries', this)">記録</button>
+    <button class="nav-link" onclick="switchView('about', this)">About</button>
+    <button class="nav-link active" onclick="switchView('study', this)">学習</button>
+
+    <div class="sidebar-divider"></div>
+
+    <span class="nav-section-label" id="chapter-label">chapters</span>
+    <ul class="chapter-list" id="chapter-nav"></ul>
+
+    <div class="sidebar-divider"></div>
+
+    <span class="nav-section-label">links</span>
+    <a class="nav-link" href="#">note</a>
+    <a class="nav-link" href="#">VRChat</a>
+    <a class="nav-link" href="#">GitHub</a>
+
+    <div class="sidebar-footer">
+      <div class="footer-note">last updated : 0000.00.00</div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+
+    <nav class="top-nav" id="top-nav" style="display:none">
+      <span class="top-nav-link active">学習ノート</span>
+    </nav>
+
+    <!-- Home -->
+    <div id="view-home" class="view">
+      <div class="chapter-content">
+        <div class="chapter-eyebrow">home</div>
+        <h1 class="chapter-title">ようこそ</h1>
+        <div class="page-rule"></div>
+        <div class="placeholder-box">ここに挨拶文を書いてください。</div>
+      </div>
+    </div>
+
+    <!-- 記録 -->
+    <div id="view-entries" class="view">
+      <div class="chapter-content">
+        <div class="chapter-eyebrow">entries</div>
+        <h1 class="chapter-title">記録</h1>
+        <div class="page-rule"></div>
+        <ul class="entries-list">
+          <li class="entry-item">
+            <span class="entry-date">0000.00.00</span>
+            <span class="entry-title">タイトルをここに</span>
+          </li>
+          <li class="entry-item">
+            <span class="entry-date">0000.00.00</span>
+            <span class="entry-title">タイトルをここに</span>
+          </li>
+          <li class="entry-item">
+            <span class="entry-date">0000.00.00</span>
+            <span class="entry-title">タイトルをここに</span>
+          </li>
+          <li class="entry-item">
+            <span class="entry-date">0000.00.00</span>
+            <span class="entry-title">タイトルをここに</span>
+          </li>
+        </ul>
+        <div class="tags-row">
+          <span class="tag">keyword</span>
+          <span class="tag">keyword</span>
+          <span class="tag">keyword</span>
+          <span class="tag">keyword</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div id="view-about" class="view">
+      <div class="chapter-content">
+        <div class="chapter-eyebrow">about</div>
+        <h1 class="chapter-title">About</h1>
+        <div class="page-rule"></div>
+        <div class="placeholder-box">自己紹介をここに書いてください。</div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div id="view-contact" class="view">
+      <div class="chapter-content">
+        <div class="chapter-eyebrow">contact</div>
+        <h1 class="chapter-title">Contact</h1>
+        <div class="page-rule"></div>
+        <table class="contact-table">
+          <tr><td>note</td><td>——</td></tr>
+          <tr><td>mail</td><td>——</td></tr>
+          <tr><td>VRChat</td><td>——</td></tr>
+          <tr><td>other</td><td>——</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 学習 -->
+    <div id="view-study" class="view visible">
+      <div class="chapter-content" id="chapter-body"></div>
+      <div class="page-controls">
+        <button class="ctrl-btn" id="btn-prev" onclick="moveChapter(-1)">← 前の章</button>
+        <span class="page-info" id="page-info"></span>
+        <button class="ctrl-btn" id="btn-next" onclick="moveChapter(1)">次の章 →</button>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+  /* =====================================================
+     章データ — タイトルと内容を自由に書き換えてください
+     ===================================================== */
+  const chapters = [
+    {
+      title: "第1章",
+      subtitle: "タイトルをここに",
+      body: "この章の内容をここに書いてください。\n\n段落を分けたい場合は空行を入れてください。"
+    },
+    {
+      title: "第2章",
+      subtitle: "タイトルをここに",
+      body: "第2章の内容をここに書いてください。"
+    },
+    {
+      title: "第3章",
+      subtitle: "タイトルをここに",
+      body: "第3章の内容をここに書いてください。"
+    },
+    {
+      title: "第4章",
+      subtitle: "タイトルをここに",
+      body: "第4章の内容をここに書いてください。"
+    },
+    {
+      title: "第5章",
+      subtitle: "タイトルをここに",
+      body: "第5章の内容をここに書いてください。"
+    },
+    {
+      title: "第6章",
+      subtitle: "タイトルをここに",
+      body: "第6章の内容をここに書いてください。"
+    },
+    {
+      title: "第7章",
+      subtitle: "タイトルをここに",
+      body: "第7章の内容をここに書いてください。"
+    },
+    {
+      title: "第8章",
+      subtitle: "タイトルをここに",
+      body: "第8章の内容をここに書いてください。"
+    },
+    {
+      title: "第9章",
+      subtitle: "タイトルをここに",
+      body: "第9章の内容をここに書いてください。"
+    },
+    {
+      title: "第10章",
+      subtitle: "タイトルをここに",
+      body: "第10章の内容をここに書いてください。"
+    }
+  ];
+
+  /* =====================================================
+     ここから下は基本的に編集不要です
+     ===================================================== */
+  let currentChapter = 0;
+
+  function buildChapterNav() {
+    const nav = document.getElementById('chapter-nav');
+    nav.innerHTML = '';
+    chapters.forEach((ch, i) => {
+      const li = document.createElement('li');
+      li.className = 'chapter-item' + (i === currentChapter ? ' active' : '');
+      li.innerHTML =
+        `<span class="ch-num">Ch.${String(i + 1).padStart(2, '0')}</span>` +
+        `<span>${ch.subtitle}</span>`;
+      li.addEventListener('click', () => goChapter(i));
+      nav.appendChild(li);
+    });
+  }
+
+  function renderChapter(idx) {
+    const ch = chapters[idx];
+    const body = document.getElementById('chapter-body');
+    const paras = ch.body
+      .split('\n\n')
+      .map(p => `<p class="content-body">${p}</p>`)
+      .join('');
+    body.innerHTML =
+      `<div class="chapter-eyebrow">chapter ${String(idx + 1).padStart(2, '0')} / ${chapters.length}</div>` +
+      `<h1 class="chapter-title">${ch.title}　${ch.subtitle}</h1>` +
+      `<div class="page-rule"></div>` +
+      `<div class="placeholder-box">${paras}</div>`;
+
+    document.getElementById('page-info').textContent =
+      `${idx + 1} / ${chapters.length}`;
+    document.getElementById('btn-prev').disabled = idx === 0;
+    document.getElementById('btn-next').disabled = idx === chapters.length - 1;
+
+    document.querySelectorAll('.chapter-item').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+    });
+    currentChapter = idx;
+  }
+
+  function goChapter(idx) {
+    renderChapter(idx);
+  }
+
+  function moveChapter(dir) {
+    const next = currentChapter + dir;
+    if (next >= 0 && next < chapters.length) goChapter(next);
+  }
+
+  function switchView(view, el) {
+    document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+
+    const views = ['home', 'entries', 'about', 'contact', 'study'];
+    views.forEach(v => {
+      const el = document.getElementById('view-' + v);
+      el.classList.toggle('visible', v === view);
+    });
+
+    const isStudy = view === 'study';
+    document.getElementById('top-nav').style.display = isStudy ? 'flex' : 'none';
+    document.getElementById('chapter-label').style.display = isStudy ? 'block' : 'none';
+    document.getElementById('chapter-nav').style.display = isStudy ? 'block' : 'none';
+  }
+
+  /* 初期化 */
+  buildChapterNav();
+  renderChapter(0);
+  document.getElementById('top-nav').style.display = 'flex';
+</script>
+
+</body>
+</html>
